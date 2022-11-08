@@ -11,7 +11,9 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
+    - name: Checkout
       uses: actions/checkout@v3
+    - name: Install Dependencies
       uses: msys2/setup-msys2@v2
       with:
         msystem: CLANG64
@@ -25,8 +27,9 @@ jobs:
     - name: Configure and build
       run: |
         echo "Runnning in msys2"
-        md -p build/windows-clang
-        pushd build/windows-clang
+        mkdir -p build/windows-clang64
+        pushd build/windows-clang64
         meson ../..
         ninja
-        ninja build
+        touch ../../src/util/u_qsort.cpp
+        ninja # error happend
