@@ -7,23 +7,26 @@ permissions:
 jobs:
   push-CI:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
-    - name: Install Dependencies
+      uses: actions/checkout@v3
       uses: msys2/setup-msys2@v2
       with:
-        msystem: clang64
+        msystem: CLANG64
         update: true
         install: >-
           git
           base-devel
-        run: git config --global core.autocrlf input
-        shell: bash
-    - name: Checkout
-      uses: actions/checkout@v3
+          mingw-w64-clang-x86_64-meson
+          mingw-w64-clang-x86_64-cc
+          mingw-w64-clang-x86_64-ninja
     - name: Configure and build
       run: |
-        mkdir build/windows-clang
-        pushd build/windows-clangbuild/windows-clang
+        echo "Runnning in msys2"
+        md -p build/windows-clang
+        pushd build/windows-clang
         meson ../..
         ninja
         ninja build
