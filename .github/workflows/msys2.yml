@@ -1,0 +1,27 @@
+name: msys2-CI
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  push-CI:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install Dependencies
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: clang64
+        update: true
+        install: >-
+          git
+          base-devel
+    - name: Configure and build
+      run: |
+        mkdir build/windows-clang
+        pushd build/windows-clangbuild/windows-clang
+        meson ../..
+        ninja
+        ninja build
