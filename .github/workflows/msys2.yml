@@ -8,8 +8,6 @@ jobs:
   push-CI:
     runs-on: windows-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
     - name: Install Dependencies
       uses: msys2/setup-msys2@v2
       with:
@@ -18,6 +16,10 @@ jobs:
         install: >-
           git
           base-devel
+        run: git config --global core.autocrlf input
+        shell: bash
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Configure and build
       run: |
         mkdir build/windows-clang
